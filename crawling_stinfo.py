@@ -1,11 +1,9 @@
 import pandas as pd
 import datetime as dtime
-import matplotlib.pyplot as plt
 import sqlite3
 import time
-from matplotlib import style
 
-conn = sqlite3.connect('d:/Stocks/kospi30d.db') #Test용 KOSPI 30일 DB
+conn = sqlite3.connect('d:/Stocks/kospi91d.db') #Test용 KOSPI 91일 DB
 cur = conn.cursor()
 
 path_kospi_stcd = 'D:/Stocks/Kospi_stockcd_20190203.csv' #Download from KRX
@@ -66,7 +64,7 @@ i = 0 #확인용
 for code in stock_code['종목코드'][430:]:
     table_name = str('stp'+str(code))
     df_stprice = stock_price_pages_to_df(code, days_limit=days_limit)
-    df_stprice.to_sql(name=table_name, con=conn, if_exists='replace')
+    df_stprice.to_sql(name=table_name, con=conn)
     print(str(code)+' is completed.')
     
     i += 1
