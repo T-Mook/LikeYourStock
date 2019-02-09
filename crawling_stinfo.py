@@ -1,9 +1,15 @@
 import pandas as pd
 import datetime as dtime
 import matplotlib.pyplot as plt
+import sqlite3
+import time
 from matplotlib import style
 
+conn = sqlite3.connect('d:/Stocks/kospi30d.db') #Test용 KOSPI 30일 DB
+cur = conn.cursor()
+
 path_kospi_stcd = 'D:/Stocks/Kospi_stockcd_20190203.csv' #Download from KRX
+days_limit = 91
 
 def read_stock_price_page(stock_code, page_num):
     '''
@@ -39,20 +45,34 @@ def stock_price_pages_to_df(code, days_limit=30):
     
         except: break
 
-    df_price = pd.concat(df_list_price, axis=0) #list 인자인 dataframe 합치기
-    df_price = df_price.reset_index(drop=True)
+    if len(df_list_price) > 1:
+        df_price = pd.concat(df_list_price, axis=0) #list 인자인 dataframe 합치기
+        df_price = df_price.reset_index(drop=True)
+    elif len(df_list_price) == 1:
+        df_price = df_list_price[0]
+        df_price = df_price.reset_index(drop=True)
+        print(str(code)+" has a table datas.")
+    else:
+        df_price = pd.DataFrame([])
+        print(str(code)+" has no datas.")
 
     return df_price
 
 stock_data = pd.read_csv(path_kospi_stcd) # Load Kospi stocks codes
 stock_code = stock_data[['종목코드', '기업명']]
 
-df_stprice_test = stock_price_pages_to_df(stock_code['종목코드'][0], days_limit=1200)
-df_stprice_test.to_csv(path_or_buf='D:/Stocks/'+str(stock_code['기업명'][0])+'_sample.csv', encoding='utf-8')
+i = 0 #확인용
 
-print(df_stprice_test.head())
-print(df_stprice_test.tail())
+for code in stock_code['종목코드'][430:]:
+    table_name = str('stp'+str(code))
+    df_stprice = stock_price_pages_to_df(code, days_limit=days_limit)
+    df_stprice.to_sql(name=table_name, con=conn, if_exists='replace')
+    print(str(code)+' is completed.')
+    
+    i += 1
+    if i % 50 == 0: 
+        print(str(i)+'th stock is completed.')
+    
+    time.sleep(1)
 
-#for code in stock_code['종목코드'][:2]:
-#    df_stprice = stock_price_pages_to_df(code, days_limit=10)
-
+conn.close() #sqlite3 연결 종료문
