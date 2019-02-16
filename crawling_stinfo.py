@@ -3,6 +3,8 @@ import datetime as dtime
 import sqlite3
 import time
 
+''' Crawling from Naver and Save Stocks Information To sqlite3 '''
+
 conn = sqlite3.connect('d:/Stocks/kospi91d.db') #Test용 KOSPI 91일 DB
 cur = conn.cursor()
 
@@ -61,7 +63,7 @@ stock_code = stock_data[['종목코드', '기업명']]
 
 i = 0 #확인용
 
-for code in stock_code['종목코드'][430:]:
+for code in stock_code['종목코드']:
     table_name = str('stp'+str(code))
     df_stprice = stock_price_pages_to_df(code, days_limit=days_limit)
     df_stprice.to_sql(name=table_name, con=conn)
