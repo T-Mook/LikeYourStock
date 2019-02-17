@@ -53,11 +53,10 @@ def preprocessing_raw_pricedata(code):
 
     return result_list
 
-
 nmldata_bystock_list = []
 pattern_stcd = re.compile(r"\d{6}")
 i = 0
-for code in stock_code['종목코드'][400:]:
+for code in stock_code['종목코드']:
     '''Preprocessing raw data with Nomalization'''
     if pattern_stcd.match(code) != None:
         table_name1 = str('prestp'+str(code))
@@ -75,9 +74,9 @@ for code in stock_code['종목코드'][400:]:
             pass
     else:
         print(str(code))
-        pass
 
 nmldata_bystock_df = pd.concat(nmldata_bystock_list, axis=0) #list 인자인 dataframe 합치기
+nmldata_bystock_df = nmldata_bystock_df.fillna(0) #null to zero
 nmldata_bystock_df.to_sql(name="tsnmp00", con=conn_save, if_exists="replace") #Time Sereis Normalization Price in Kospi(00)
 
 print(str(i) + " stocks are preprocessed.")
