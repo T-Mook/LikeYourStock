@@ -2,7 +2,7 @@ import pandas as pd
 import sqlite3
 import re
 
-''' Preprocessing Datas '''
+''' Preprocessing (with Normalizations) Datas '''
 
 #Load Stock Code from KRX csv file
 path_kospi_stcd = 'D:/Stocks/Kospi_stockcd_20190203.csv' #Download from KRX

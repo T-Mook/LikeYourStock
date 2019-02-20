@@ -1,6 +1,7 @@
 {
     "python.pythonPath": "C:\\Anaconda3\\envs\\LikeYourStocks\\python.exe",
     "python.linting.pylintArgs": [
-        "--disable=E1101"
+        "--disable=E1101",
+        "--disable=C0103"
     ]
 }
