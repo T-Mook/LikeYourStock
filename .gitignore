@@ -1,8 +1,23 @@
 # config folder
 **/.vscode/
 
+# 랩탑용 DB
+Stocks/
+fig/
+
 # 에러문 폴더
 **/errors/
+
+### VisualStudioCode ###
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+### VisualStudioCode Patch ###
+# Ignore all local history of files
+.history
 
 # 기타
 
