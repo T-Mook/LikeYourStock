@@ -1,7 +1,7 @@
+import sqlite3
 import matplotlib as mpl; mpl.use('TkAgg') #only for MAC OS 
 import matplotlib.pyplot as plt
 #import mglearn
-import sqlite3
 import pandas as pd
 from sklearn import decomposition
 
@@ -18,25 +18,29 @@ sampleData = pd.read_sql(sql=query, con=conn)
 #name, features로 쪼개기
 sampleName = sampleData['종목코드']
 sampleFetures = sampleData[sampleData.columns[1:]]
+sampleFetures = sampleFetures.cumsum(axis=1) #cumulative sum, 일자누적
+
+#from dataframe to numpy
 sampleNameNdarray = sampleName.values
 sampleFeturesNdarray = sampleFetures.values
 
-X = sampleFeturesNdarray
-
 #part1 : PCA
-pca = decomposition.PCA(n_components=6)
+X = sampleFeturesNdarray
+pca = decomposition.PCA(n_components=4)
 pca.fit(X)
 XTrans = pca.transform(X)
 
 #PCA check
-for i in range(0, 5): # 전체는 X.shape[1]
+for i in range(0, 3): # 전체는 X.shape[1]
     plt.subplot(2, 1, 1)
-    plt.plot(X[i])
+    plt.plot(X[i], label=str(sampleNameNdarray[i]))
     plt.title("original")
+    plt.legend(loc=3)
 
     plt.subplot(2, 1, 2)
-    plt.plot(XTrans[i])
+    plt.plot(XTrans[i], label=str(sampleNameNdarray[i]))
     plt.title("After PCA")
+    plt.legend(loc=3)
 
 plt.show()
 
