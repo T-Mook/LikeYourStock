@@ -1,8 +1,0 @@
-{
-    "python.pythonPath": "/Users/tmook/anaconda3/envs/LikeYourStocks/bin/python",
-    "python.linting.pylintArgs": [
-        "--disable=E1101",
-        "--disable=C0103",
-        "--disable=C0413"
-    ]
-}
