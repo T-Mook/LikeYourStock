@@ -1,6 +1,3 @@
-# config folder
-**/.vscode/
-
 # 랩탑용 DB
 Stocks/
 fig/
@@ -20,7 +17,7 @@ fig/
 .history
 
 # 기타
-
+cache/
 .DS_Store
 .DS_Store?
 ._*
