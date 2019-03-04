@@ -8,7 +8,7 @@ from sklearn import decomposition
 dataPathInMac = "/Users/tmook/documents/Projects/LikeYourStock/Stocks/ppkospi91d.db" #Mac 경로
 dataPathInWin = "d:/Stocks/ppkospi91d.db"
 
-conn = sqlite3.connect(dataPathInMac) #Preprocessed Raw data
+conn = sqlite3.connect(dataPathInWin) #Preprocessed Raw data
 cur = conn.cursor()
 
 tableName = "tsnmp00"
