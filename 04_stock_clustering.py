@@ -1,6 +1,7 @@
 import sqlite3
 import matplotlib as mpl; mpl.use('TkAgg') #only for MAC OS 
 import matplotlib.pyplot as plt
+import numpy as np
 import pandas as pd
 
 from sklearn.cluster import KMeans
@@ -23,10 +24,10 @@ sampleFetures = sampleFetures.cumsum(axis=1) #cumulative sum, 일자누적
 
 #from dataframe to numpy
 sampleNameNdarray = sampleName.values
-sampleFeturesNdarray = sampleFetures.values
+sampleFeaturesNdarray = sampleFetures.values
 
 #part1 : PCA
-X = sampleFeturesNdarray
+X = sampleFeaturesNdarray
 pca = decomposition.PCA(n_components=4)
 pca.fit(X)
 XTrans = pca.transform(X)
@@ -48,8 +49,44 @@ XTrans = pca.transform(X)
 kmeans = KMeans(n_clusters=4)
 kmeans.fit(XTrans)
 
-print("Label Count: {}".format(len(kmeans.labels_)))
+#check kmeans
+kmUnique, kmUCounts, kmIndex  = np.unique(kmeans.labels_, return_counts=True, return_index=True)
+
+print("Total Label Count:{}".format(len(kmeans.labels_)))
+print("Unique Label:\n{}".format(kmUnique))
+print("Unique Label Count:\n{}".format(kmUCounts))
+print("Unique Index Name:\n{}".format(sampleNameNdarray[kmIndex]))
 print("Cluster Label:\n{}".format(kmeans.labels_))
 
+#서로 다른 모양의 차트를 확인
+for stNum, o, p  in zip(sampleNameNdarray[kmIndex], X[kmIndex], XTrans[kmIndex]):
+    plt.subplot(2, 1, 1)
+    plt.plot(o, label=str(stNum))
+    plt.title("original")
+    plt.legend(loc=3)
+
+    plt.subplot(2, 1, 2)
+    plt.plot(p, label=str(stNum))
+    plt.title("After PCA (n_components=4)")
+    plt.legend(loc=3)
+
+plt.savefig("D:/stocks/clusterRepresentativeStock.png", dpi=300)
+
+#서로 비슷한 모양의 차트를 확인
+for i in range(0, 4):
+    labelIndex = np.where(kmeans.labels_ == i) # 특정 값의 index값 return
+    for v in labelIndex[0][:5]:
+        plt.subplot(2, 1, 1)
+        plt.plot(X[v], label=str(sampleNameNdarray[v]))
+        plt.title("original")
+        plt.legend(loc=3)
+        
+        plt.subplot(2, 1, 2)
+        plt.plot(XTrans[v], label=str(sampleNameNdarray[v]))
+        plt.title("After PCA (n_components=4)")
+        plt.legend(loc=3)
+        
+    plt.savefig("D:/stocks/label_"+str(i)+".png", dpi=300)
+    plt.close()
 
 conn.close() #sqlite3 연결 종료문
