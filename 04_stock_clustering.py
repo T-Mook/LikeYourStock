@@ -9,6 +9,8 @@ from sklearn import decomposition
 
 dataPathInMac = "/Users/tmook/documents/Projects/LikeYourStock/Stocks/ppkospi91d.db" #Mac 경로
 dataPathInWin = "d:/Stocks/ppkospi91d.db"
+dirSaveFigInMac = "/Users/tmook/documents/Projects/LikeYourStock/Stocks/"
+dirSaveFigInWin = "d:/Stocks/"
 
 conn = sqlite3.connect(dataPathInWin) #Preprocessed Raw data
 cur = conn.cursor()
@@ -70,7 +72,7 @@ for stNum, o, p  in zip(sampleNameNdarray[kmIndex], X[kmIndex], XTrans[kmIndex])
     plt.title("After PCA (n_components=4)")
     plt.legend(loc=3)
 
-plt.savefig("D:/stocks/clusterRepresentativeStock.png", dpi=300)
+plt.savefig(dirSaveFigInWin+"clusterRepresentativeStock.png", dpi=300)
 
 #서로 비슷한 모양의 차트를 확인
 for i in range(0, 4):
@@ -86,7 +88,7 @@ for i in range(0, 4):
         plt.title("After PCA (n_components=4)")
         plt.legend(loc=3)
         
-    plt.savefig("D:/stocks/label_"+str(i)+".png", dpi=300)
+    plt.savefig(dirSaveFigInWin+"label_"+str(i)+".png", dpi=300)
     plt.close()
 
 conn.close() #sqlite3 연결 종료문
