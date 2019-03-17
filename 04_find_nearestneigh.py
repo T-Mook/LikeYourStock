@@ -3,6 +3,7 @@ import matplotlib as mpl; mpl.use('TkAgg') #only for MAC OS
 import matplotlib.pyplot as plt
 import pandas as pd
 
+from sklearn import decomposition
 from sklearn.neighbors import NearestNeighbors
 
 dataPathInMac = "/Users/tmook/documents/Projects/LikeYourStock/Stocks/ppkospi91d.db" #Mac 경로
@@ -22,7 +23,7 @@ sampleFetures = sampleFetures.cumsum(axis=1) #cumulative sum, 일자누적
 
 #from dataframe to numpy
 sampleNameNdarray = sampleName.values
-sampleFeturesNdarray = sampleFetures.values
+sampleFeaturesNdarray = sampleFetures.values
 
 #Part1 : PCA
 X = sampleFeaturesNdarray
